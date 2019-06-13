@@ -26,11 +26,5 @@ namespace EpicStore.Builder
                            Ram.Price + HardDrive.Price + PowerAdapter.Price); }
         }
 
-        static int PriceCalc(Motherboard motherboard, Processor processor, Ram ram,
-            Graphics graphics, HardDrive hardDrive, PowerAdapter power)
-        {
-            return (motherboard.Price + graphics.Price + processor.Price +
-                    ram.Price + hardDrive.Price + power.Price);
-        }
     }
 }

@@ -1,62 +1,53 @@
-﻿using System.Collections.Generic;
-using EpicStore.Builder;
+﻿using EpicStore.Builder;
 
 namespace EpicStore.Iterator
 {
     public class Iterator : IIterator
     {
-        private ICollection aggregate;
+        private CompCollection _computerCollection;
+        private int _curr = 0;
+        private int _step = 1;
 
-        private List<Computer> collection = new List<Computer>();
-        private int pointer = 0;
-
-        public Iterator(ICollection aggregate)
+        public Iterator(CompCollection computerCollection)
         {
-            this.aggregate = aggregate;
+            this._computerCollection = computerCollection;
         }
 
-        public int getAmount()
+        public Computer First()
         {
-            return collection.Count;
+            _curr = 0;
+            return _computerCollection[_curr] as Computer;
         }
 
-        Computer IIterator.First()
+        public Computer Next()
         {
-            pointer = 0;
-            return collection[pointer];
-        }
-
-        Computer IIterator.Curr()
-        {
-            return collection[pointer];
-        }
-
-        Computer IIterator.Next()
-        {
-            return collection[pointer++];
-        }
-
-        void IIterator.AddComp(Computer comp)
-        {
-            collection.Add(comp);
-        }
-
-        public int Find(Computer comp)
-        {
-            return collection.IndexOf(comp);
-        }
-
-        public void Remove(Computer comp)
-        {
-            collection.Remove(comp);
-        }
-
-        bool IIterator.isJobDone()
-        {
-            if (pointer == collection.Count - 1)
-                return true;
+            _curr += _step;
+            if (!IsDone)
+                return _computerCollection[_curr] as Computer;
             else
-                return false;
+                return null;
+        }
+
+        public int Curr
+        {
+            get { return _curr; }
+            set { _curr = value; }
+        }
+
+        public int Step
+        {
+            get { return _step; }
+            set { _step = value; }
+        }
+
+        public Computer GetCurrent
+        {
+            get { return _computerCollection[_curr] as Computer;}
+        }
+
+        public bool IsDone
+        {
+            get { return _curr >= _computerCollection.NumberOfComputers; }
         }
     }
 }

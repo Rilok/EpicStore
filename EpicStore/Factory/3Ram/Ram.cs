@@ -12,5 +12,11 @@ namespace EpicStore.Factory._3Ram
         public int MemorySize { get; set; }
         public int Clocking { get; set; }
         public int Price { get; set; }
+        public override string ToString()
+        {
+            return $"RAM:\nProducent: {Manufacturer}\nModel: {Model}\nIlość kości: " +
+                   $"{Amount}\nRozmiar pamięci: {MemorySize} GB\nTaktowanie: " +
+                   $"{Clocking}MHz\nCena: {Price} zł";
+        }
     }
 }

@@ -26,7 +26,8 @@ namespace EpicStore.Factory._4GraphicsCard
                     switch (choice)
                     {
                         case 1: return new AmdGraph1();
-                        default: return new AmdGraph2();
+                        case 2: return new AmdGraph2();
+                        default: return null;
                     }
                 }
 
@@ -36,7 +37,8 @@ namespace EpicStore.Factory._4GraphicsCard
                     {
                         case 1: return new nVidiaGraph1();
                         case 2: return new nVidiaGraph2();
-                        default: return new nVidiaGraph3();
+                        case 3: return new nVidiaGraph3();
+                        default: return null;
                     }
                 }
 

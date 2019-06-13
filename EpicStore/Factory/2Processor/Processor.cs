@@ -13,5 +13,12 @@ namespace EpicStore.Factory._2Processor
         public double MinClocking { get; set; }
         public double MaxClocking { get; set; }
         public int Price { get; set; }
+
+        public override string ToString()
+        {
+            return
+                $"Procesor:\nProducent: {Manufacturer}\nModel: {Model}\nSocket: {Socket}\n" +
+                $"Ilość rdzeni: {Cores}\nTaktowanie: {MinClocking} - {MaxClocking} GHz\nCena: {Price} zł";
+        }
     }
 }

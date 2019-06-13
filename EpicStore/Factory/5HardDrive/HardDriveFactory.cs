@@ -26,7 +26,8 @@ namespace EpicStore.Factory._5HardDrive
                     switch (choice)
                     {
                         case 1: return new Ssd1();
-                        default: return new Ssd2();
+                        case 2: return new Ssd2();
+                        default: return null;
                     }
                 }
 
@@ -35,7 +36,8 @@ namespace EpicStore.Factory._5HardDrive
                     switch (choice)
                     {
                         case 1: return new Hdd1();
-                        default: return new Hdd2();
+                        case 2: return new Hdd2();
+                        default: return null;
                     }
                 }
 

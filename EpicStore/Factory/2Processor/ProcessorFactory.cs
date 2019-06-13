@@ -1,6 +1,7 @@
 ﻿using System;
 using EpicStore.Factory._2Processor.AMDStuff;
 using EpicStore.Factory._2Processor.IntelStuff;
+using EpicStore.Strategy;
 
 namespace EpicStore.Factory._2Processor
 {
@@ -27,7 +28,8 @@ namespace EpicStore.Factory._2Processor
                     {
                         case 1: return new IntelProc1();
                         case 2: return new IntelProc2();
-                        default: return new IntelProc3();
+                        case 3: return new IntelProc3();
+                        default: return null;
                     }
                 }
 
@@ -37,7 +39,8 @@ namespace EpicStore.Factory._2Processor
                     {
                         case 1: return new AmdProc1();
                         case 2: return new AmdProc2();
-                        default: return new AmdProc3();
+                        case 3: return new AmdProc3();
+                        default: return null;
                     }
                 }
 

@@ -1,62 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using EpicStore.Builder;
 
 namespace EpicStore.Iterator
 {
     public class CompCollection : ICollection
     {
-        private IIterator iterator;
+        private ArrayList _computers = new ArrayList();
 
-        public CompCollection()
+        public Iterator CreateIterator()
         {
-            (this as ICollection).CreateIterator();
+            return new Iterator(this);
         }
 
-        IIterator ICollection.CreateIterator()
+        public int NumberOfComputers
         {
-            if (iterator == null)
-                iterator = new Iterator(this);
-            return iterator;
+            get { return _computers.Count; }
         }
 
-        List<Computer> ICollection.GetAllComputers()
+        public object this[int index]
         {
-            List<Computer> compList = new List<Computer>();
-            if (iterator.getAmount() != 0)
-            {
-                compList.Add(iterator.First());
-                while (!iterator.isJobDone())
-                {
-                    compList.Add(iterator.Next());
-                }
-            }
-
-            return compList;
+            get { return _computers[index]; }
+            set { _computers.Add(value); }
         }
 
-        void ICollection.AddComp(Computer comp)
+        public void Add(object computer)
         {
-            iterator.AddComp(comp);
-        }
-
-        Computer ICollection.GetOne(Computer comp)
-        {
-            var holder = iterator.First();
-            while (!iterator.isJobDone())
-            {
-                if (holder.Equals(comp))
-                    return holder;
-                else
-                    holder = iterator.Next();
-            }
-            return holder;
-        }
-
-        public void RemComp(Computer comp)
-        {
-            int index = iterator.Find(comp);
-            if (index != -1)
-                iterator.Remove(comp);
+            _computers.Add(computer);
         }
     }
 }

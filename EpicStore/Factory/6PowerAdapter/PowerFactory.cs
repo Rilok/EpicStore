@@ -23,7 +23,8 @@ namespace EpicStore.Factory._6PowerAdapter
             {
                 case 1: return new Power1();
                 case 2: return new Power2();
-                default: return new Power3();
+                case 3: return new Power3();
+                default: return null;
             }
         }
     }
