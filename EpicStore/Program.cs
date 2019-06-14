@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using EpicStore.Builder;
+using EpicStore.Facade;
 using EpicStore.Factory._1Motherboard;
-using EpicStore.Factory._1Motherboard.Stuff;
 using EpicStore.Factory._2Processor;
-using EpicStore.Factory._2Processor.AMDStuff;
-using EpicStore.Factory._2Processor.IntelStuff;
 using EpicStore.Factory._3Ram;
-using EpicStore.Factory._3Ram.Stuff;
-using EpicStore.Factory._4GraphicsCard;
-using EpicStore.Factory._4GraphicsCard.AMDStuff;
-using EpicStore.Factory._4GraphicsCard.nVidiaStuff;
 using EpicStore.Factory._5HardDrive;
-using EpicStore.Factory._5HardDrive.HddStuff;
-using EpicStore.Factory._5HardDrive.SsdStuff;
 using EpicStore.Factory._6PowerAdapter;
-using EpicStore.Factory._6PowerAdapter.Stuff;
 using EpicStore.Iterator;
 using EpicStore.Strategy;
 
@@ -23,24 +13,25 @@ namespace EpicStore
 {
     class Program
     {
+        public static int mother, proc, ram, graph, hard, power;
+        public static string graphChoice, driveChoice;
         static void Main(string[] args)
         {
             int choose;
             int chooseComputer;
 
-            int mother, proc, ram, graph, hard, power;
+            Motherboard tmpMother;
+            Processor tmpProc;
 
-            
-            GraphicsFactory graphicsFactory = GraphicsFactory.Instance;
-            HardDriveFactory hardDriveFactory = HardDriveFactory.Instance;
-
-
-
-            Builder.Computer builderComputer;
             var epicCompany = new EpicCompany();
             CompCollection computerList = new CompCollection();
 
             Iterator.Iterator iterator = computerList.CreateIterator();
+
+            //INIT LIST
+            computerList[0] = epicCompany.Build(new LowEndBuilder(1, 1, 1, 1, 1, 1, "nVidia", "SSD"));
+            computerList[1] = epicCompany.Build(new LowEndBuilder(1, 2, 1, 2, 2, 3, "AMD", "HDD"));
+            computerList[2] = epicCompany.Build(new LowEndBuilder(3, 2, 2, 2, 1, 3, "nVidia", "SSD"));
 
             Console.WriteLine("Witaj w sklepie komputerowym!");
 
@@ -60,19 +51,16 @@ namespace EpicStore
                     case 1:
                     {
                         mother = ChooseMotherboard();
+                        tmpMother = MotherboardFactory.Instance.TakeMotherboard(mother);
+
                         proc = ChooseProcessor(mother);
+                        tmpProc = ProcessorFactory.Instance.TakeProcessor(tmpMother.Socket, proc);
+
                         ram = ChooseRam();
-                        //graph = ChooseGraph();
-                        //hard = ChooseHardDrive();
+                        ChooseGraphHard(tmpProc);
                         power = ChoosePower();
-
-                        builderComputer = epicCompany.Build(new LowEndBuilder(1, 2, 1, 2, 2, 3, "AMD", "SSD"));
-                        
-
-                        computerList[0] = epicCompany.Build(new LowEndBuilder(mother, proc, ram, 2, 2, power, "AMD", "SSD"));
-                        computerList[1] = epicCompany.Build(new LowEndBuilder(1, 2, 1, 2, 2, 3, "AMD", "SSD"));
-                        computerList[2] = epicCompany.Build(new LowEndBuilder(1, 2, 1, 2, 2, 3, "AMD", "SSD"));
-                        computerList[3] = epicCompany.Build(new LowEndBuilder(1, 2, 1, 2, 2, 3, "AMD", "SSD"));
+                            
+                        computerList.Add(epicCompany.Build(new LowEndBuilder(mother, proc, ram, graph, hard, power, "AMD", "SSD")));
 
                         //iterator.Step = 2;
 
@@ -83,7 +71,7 @@ namespace EpicStore
                     case 2:
                     {
                         Console.WriteLine("Wpisz numer swojego komputera: ");
-                        chooseComputer = Convert.ToInt32(Console.ReadLine());
+                        chooseComputer = Convert.ToInt32(Console.ReadLine()) - 1;
 
                         iterator.Curr = chooseComputer;
                         Console.Clear();
@@ -102,7 +90,7 @@ namespace EpicStore
                             !iterator.IsDone;
                             computer = iterator.Next())
                         {
-                            Console.WriteLine("#1\n");
+                            Console.WriteLine($"\n#{iterator.Curr + 1}\n");
                             PrintData(computer);
                         }
                         Console.WriteLine("\nNaciśnij dowolny klawisz...");
@@ -113,31 +101,6 @@ namespace EpicStore
                     default: break;
                 }
             } while (choose != 4);
-        }
-
-        static void MakeChoice()
-        {
-            Console.WriteLine("Jaki podzespół chcesz wymienić?");
-            Console.WriteLine("1. Płyta główna.");
-            Console.WriteLine("2. Procesor");
-            Console.WriteLine("3. RAM.");
-            Console.WriteLine("4. Karta Graficzna.");
-            Console.WriteLine("5. Dysk twardy.");
-            Console.WriteLine("6. Zasilacz.");
-
-            int choice = Convert.ToInt32(Console.ReadLine());
-
-            Console.Clear();
-
-            switch (choice)
-            {
-                case 1:
-                {
-                    Console.WriteLine("Wybierz podzespół.");
-                    
-                    break;
-                }
-            }
         }
 
         static void PrintData(Computer computer)
@@ -226,6 +189,60 @@ namespace EpicStore
             return choose;
         }
 
+        static void ChooseGraphHard(Processor proc)
+        {
+            Console.Clear();
+            Console.WriteLine("Jaką chcesz wersję?");
+            Console.WriteLine("1. W pełni optymalna.");
+            Console.WriteLine("2. Optymalna pod grafikę.");
+            Console.WriteLine("3. Optymalna pod dysk.");
+            Console.WriteLine("4. Bez optymalizacji.");
+
+            int choice = Convert.ToInt32(Console.ReadLine()); 
+            
+            Console.Clear();
+            FacadeSetup setUp = new FacadeSetup();
+
+            switch (choice)
+            {
+                case 1:
+                {
+                    setUp.OptimalChoice(proc);
+                    SetOptGraphChoice(proc);
+                    driveChoice = "SSD";
+                    break;
+                }
+
+                case 2:
+                {
+                    setUp.GraphOptimalChoice(proc);
+                    SetOptGraphChoice(proc);
+                    driveChoice = "HDD";
+                    break;
+                }
+
+                case 3:
+                {
+                    setUp.DriveOptimalChoice(proc);
+                    SetGraphChoice(proc);
+                    driveChoice = "SSD";
+                    break;
+                }
+
+                case 4:
+                {
+                    setUp.Choice(proc);
+                    SetGraphChoice(proc);
+                    driveChoice = "HDD";
+                    break;
+                }
+            }
+
+            graph = setUp.graph;
+            hard = setUp.drive;
+
+        }
+
         static int ChoosePower()
         {
             PowerFactory powerFactory = PowerFactory.Instance;
@@ -250,6 +267,22 @@ namespace EpicStore
             }
 
             return choose;
+        }
+
+        static void SetOptGraphChoice(Processor proc)
+        {
+            if (proc.Manufacturer == "Intel")
+                graphChoice = "nVidia";
+            else
+                graphChoice = "AMD";
+        }
+
+        static void SetGraphChoice(Processor proc)
+        {
+            if (proc.Manufacturer == "Intel")
+                graphChoice = "AMD";
+            else
+                graphChoice = "nVidia";
         }
     }
 }

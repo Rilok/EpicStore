@@ -2,6 +2,6 @@
 {
     public interface IHardDriveFactory
     {
-        HardDrive TakeHardDrive(string type, int choice);
+        HardDrive TakeHardDrive(int choice);
     }
 }

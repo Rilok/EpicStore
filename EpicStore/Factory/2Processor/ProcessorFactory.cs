@@ -18,11 +18,11 @@ namespace EpicStore.Factory._2Processor
             get { return _mothInstance.Value; }
         }
 
-        public Processor TakeProcessor(string brand, int choice)
+        public Processor TakeProcessor(string socket, int choice)
         {
-            switch (brand)
+            switch (socket)
             {
-                case "Intel":
+                case "1151":
                 {
                     switch (choice)
                     {
@@ -33,7 +33,7 @@ namespace EpicStore.Factory._2Processor
                     }
                 }
 
-                case "AMD":
+                case "AM4":
                 {
                     switch (choice)
                     {

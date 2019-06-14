@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EpicStore.Factory;
-using EpicStore.Factory._1Motherboard;
+﻿using EpicStore.Factory._1Motherboard;
 using EpicStore.Factory._2Processor;
 using EpicStore.Factory._3Ram;
 using EpicStore.Factory._4GraphicsCard;
@@ -49,14 +45,7 @@ namespace EpicStore.Builder
 
         public override ComputerBuilder InstallProcessor()
         {
-            if (_computerUnit.Motherboard.Socket == "1151")
-            {
-                _computerUnit.Processor = ProcessorFactory.Instance.TakeProcessor("Intel", p);
-            }
-            else if (_computerUnit.Motherboard.Socket == "AM4")
-            {
-                _computerUnit.Processor = ProcessorFactory.Instance.TakeProcessor("AMD", p);
-            }
+            _computerUnit.Processor = ProcessorFactory.Instance.TakeProcessor(_computerUnit.Motherboard.Socket, p);
             return this;
         }
 
@@ -70,11 +59,11 @@ namespace EpicStore.Builder
         {
             if (graphChoice == "AMD")
             {
-                _computerUnit.GraphicsCard = GraphicsFactory.Instance.TakeGraphicsCard("AMD", g);
+                _computerUnit.GraphicsCard = AmdGraphFactory.Instance.TakeGraphicsCard(g);
             }
             else if (graphChoice == "nVidia")
             {
-                _computerUnit.GraphicsCard = GraphicsFactory.Instance.TakeGraphicsCard("nVidia", g);
+                _computerUnit.GraphicsCard = NvidiaGraphFactory.Instance.TakeGraphicsCard(g);
             }
             return this;
         }
@@ -83,11 +72,11 @@ namespace EpicStore.Builder
         {
             if (driveChoice == "SSD")
             {
-                _computerUnit.HardDrive = HardDriveFactory.Instance.TakeHardDrive("SSD", d);
+                _computerUnit.HardDrive = SSDFactory.Instance.TakeHardDrive(d);
             }
             else if (driveChoice == "HDD")
             {
-                _computerUnit.HardDrive = HardDriveFactory.Instance.TakeHardDrive("HDD", d);
+                _computerUnit.HardDrive = HDDFactory.Instance.TakeHardDrive(d);
             }
             return this;
         }

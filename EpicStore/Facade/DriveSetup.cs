@@ -1,27 +1,29 @@
 ﻿using System;
-using EpicStore.Factory._2Processor;
+using EpicStore.Factory._5HardDrive;
 
-namespace EpicStore.Strategy
+namespace EpicStore.Facade
 {
-    public class AmdProc : ProcStrategy
+    public class DriveSetup
     {
-        public override int ChooseProcessor(ProcessorFactory processorFactory)
+        public int ChooseDrive()
         {
+            HDDFactory factory = HDDFactory.Instance;
+
             int x = 1;
             Console.WriteLine("Wybierz procesor.\n\n");
 
-            while (processorFactory.TakeProcessor("AM4", x) != null)
+            while (factory.TakeHardDrive(x) != null)
             {
-                Console.WriteLine($"#{x}: \n{processorFactory.TakeProcessor("AM4", x)}");
+                Console.WriteLine($"#{x}: \n{factory.TakeHardDrive(x)}");
                 x++;
             }
             int choose = Convert.ToInt32(Console.ReadLine());
-            if (0 >= choose || choose >= 4)
+            if (0 >= choose || choose >= 3)
             {
                 Console.WriteLine("Podałeś zły wariant.");
                 Console.WriteLine("Naciśnij dowolny klawisz...");
                 Console.ReadKey();
-                ChooseProcessor(processorFactory);
+                ChooseDrive();
             }
 
             return choose;

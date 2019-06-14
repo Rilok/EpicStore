@@ -2,6 +2,6 @@
 {
     public interface IGraphicsFactory
     {
-        Graphics TakeGraphicsCard(string brand, int choice);
+        Graphics TakeGraphicsCard(int choice);
     }
 }

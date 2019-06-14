@@ -12,7 +12,7 @@
         public override string ToString()
         {
             return $"Płyta główna:\nProducent: {Manufacturer}\nModel: {Model}\nTyp: {Type}\n" +
-                   $"Chipset: {Chipset}\nSocket: {Socket}\nCena: {Price} zł";
+                   $"Chipset: {Chipset}\nSocket: {Socket}\nCena: {Price} zł\n";
         }
     }
 }

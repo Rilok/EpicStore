@@ -1,6 +1,4 @@
-﻿using System;
-using EpicStore.Factory;
-using EpicStore.Factory._1Motherboard;
+﻿using EpicStore.Factory._1Motherboard;
 using EpicStore.Factory._2Processor;
 using EpicStore.Factory._3Ram;
 using EpicStore.Factory._4GraphicsCard;

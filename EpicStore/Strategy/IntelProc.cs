@@ -10,9 +10,9 @@ namespace EpicStore.Strategy
             int x = 1;
             Console.WriteLine("Wybierz procesor.\n\n");
 
-            while (processorFactory.TakeProcessor("Intel", x) != null)
+            while (processorFactory.TakeProcessor("1151", x) != null)
             {
-                Console.WriteLine($"#{x}: \n{processorFactory.TakeProcessor("Intel", x)}");
+                Console.WriteLine($"#{x}: \n{processorFactory.TakeProcessor("1151", x)}");
                 x++;
             }
             int choose = Convert.ToInt32(Console.ReadLine());
